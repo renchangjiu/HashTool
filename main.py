@@ -6,6 +6,7 @@ from PyQt5.QtCore import Qt, QObject, QEvent
 from PyQt5.QtGui import QIcon, QKeyEvent, QColor
 from PyQt5.QtWidgets import QWidget, QListWidgetItem
 
+from src.app_attribute import AppAttribute as app
 from src.main_window import Ui_Form
 from src.hash_util import HashUtil
 from src.clipboard_util import ClipboardUtil
@@ -28,8 +29,6 @@ class MainWindow(QWidget, Ui_Form):
             widget_item.setText("文件不存在")
             return
 
-
-        print(sys.argv)
         widget_item = QListWidgetItem(self.listWidget)
         widget_item.setText(os.path.basename(file_path))
         widget_item.setTextAlignment(Qt.AlignCenter)
@@ -56,7 +55,7 @@ class MainWindow(QWidget, Ui_Form):
         return widget_item
 
     def init_style(self):
-        self.setWindowIcon(QIcon("./resource/image/app.png"))
+        self.setWindowIcon(QIcon(app.root + "/resource/image/app.png"))
         self.setWindowFlag(Qt.FramelessWindowHint)
         self.listWidget.setStyleSheet(
             "QListWidget{outline:0px; color:#5c5c5c; background:#f5f5f7;border-top:none;border-left:none;"
@@ -88,11 +87,19 @@ def format_size(size: int) -> str:
     return size
 
 
+def init_app_attribute():
+    app.root = os.path.split(sys.argv[0])[0]
+
+
 def main():
-    app = QtWidgets.QApplication(sys.argv)
+    app_ = QtWidgets.QApplication(sys.argv)
+    if len(sys.argv) <= 1:
+        print("未检测到文件...")
+        return
+    init_app_attribute()
     main_window = MainWindow(sys.argv[1])
     main_window.show()
-    sys.exit(app.exec_())
+    sys.exit(app_.exec_())
 
 
 if __name__ == "__main__":
