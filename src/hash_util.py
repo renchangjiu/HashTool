@@ -13,7 +13,7 @@ class HashUtil(object):
             else:
                 break
         file.close()
-        return md5.hexdigest()
+        return md5.hexdigest().upper()
 
     @staticmethod
     def SHA1(file_path: str) -> str:
@@ -26,7 +26,7 @@ class HashUtil(object):
             else:
                 break
         file.close()
-        return sha1.hexdigest()
+        return sha1.hexdigest().upper()
 
     @staticmethod
     def SHA256(file_path: str) -> str:
@@ -39,4 +39,4 @@ class HashUtil(object):
             else:
                 break
         file.close()
-        return sha256.hexdigest()
+        return sha256.hexdigest().upper()
