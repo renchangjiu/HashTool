@@ -8,7 +8,7 @@ class HashUtil(object):
         file = open(file_path, "rb")
         while True:
             r = file.read(1024 * 8)
-            if not r:
+            if len(r) != 0:
                 md5.update(r)
             else:
                 break
@@ -21,7 +21,7 @@ class HashUtil(object):
         file = open(file_path, "rb")
         while True:
             r = file.read(1024 * 8)
-            if not r:
+            if len(r) != 0:
                 sha1.update(r)
             else:
                 break
@@ -34,7 +34,7 @@ class HashUtil(object):
         file = open(file_path, "rb")
         while True:
             r = file.read(1024 * 8)
-            if not r:
+            if len(r) != 0:
                 sha256.update(r)
             else:
                 break

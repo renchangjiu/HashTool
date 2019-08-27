@@ -1,39 +1,24 @@
-import winreg as reg
+import winreg
+
+from src.app_attribute import AppAttribute as app
 
 
-def delete_reg_key(root_key, key, menu_name):
-    '''
-    删除一个右键菜单注册表子键
-    :param root_key:根键
-    :param key: 父键
-    :param menu_name: 菜单子键名称
-    :return: None
-    '''
+def delete_reg_key():
     try:
-        parent_key = reg.OpenKey(root_key, key)
+        parent_key = winreg.OpenKey(winreg.HKEY_CLASSES_ROOT, r"*\\shell")
+        menu_key = winreg.OpenKey(parent_key, app.app_name)
+        # 删除子项
+        winreg.DeleteKey(menu_key, 'command')
+        # 删除父项
+        winreg.DeleteKey(parent_key, app.app_name)
+        winreg.CloseKey(parent_key)
     except Exception as msg:
         print(msg)
-        return
-    if parent_key:
-        try:
-            menu_key = reg.OpenKey(parent_key, menu_name)
-        except Exception as msg:
-            print(msg)
-            return
-        if menu_key:
-            try:
-                # 必须先删除子键的子键，才能删除子键本身
-                reg.DeleteKey(menu_key, 'command')
-            except Exception as msg:
-                print(msg)
-                return
-            else:
-                reg.DeleteKey(parent_key, menu_name)
+
+
+def main():
+    delete_reg_key()
 
 
 if __name__ == '__main__':
-    menu_name = 'Show file path'
-    delete_reg_key(reg.HKEY_CLASSES_ROOT, r'*\\shell', menu_name)
-    delete_reg_key(reg.HKEY_CLASSES_ROOT, r'Directory\\shell', menu_name)
-    delete_reg_key(reg.HKEY_CLASSES_ROOT, r'Directory\\Background\\shell', menu_name)
-    delete_reg_key(reg.HKEY_CLASSES_ROOT, r'Drive\\shell', menu_name)
+    main()

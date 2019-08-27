@@ -31,14 +31,15 @@ class MainWindow(QWidget, Ui_Form):
 
         widget_item = QListWidgetItem(self.listWidget)
         widget_item.setText(os.path.basename(file_path))
-        widget_item.setTextAlignment(Qt.AlignCenter)
+        # widget_item.setTextAlignment(Qt.AlignCenter)
+
         widget_item = QListWidgetItem(self.listWidget)
         widget_item.setText(file_path)
-        widget_item.setTextAlignment(Qt.AlignCenter)
+        # widget_item.setTextAlignment(Qt.AlignCenter)
+
         widget_item = QListWidgetItem(self.listWidget)
         widget_item.setText(format_size(os.path.getsize(file_path)))
-
-        widget_item.setTextAlignment(Qt.AlignCenter)
+        # widget_item.setTextAlignment(Qt.AlignCenter)
 
         self.listWidget.addItem(self.gen_list_item("MD5", HashUtil.MD5(file_path)))
         self.listWidget.addItem(self.gen_list_item("SHA1", HashUtil.SHA1(file_path)))
@@ -63,6 +64,13 @@ class MainWindow(QWidget, Ui_Form):
             "QListWidget::Item{height:32px;border:0px solid gray;padding-left:19px;font-size:13px;}"
             "QListWidget::Item:hover{color:#000000;background:transparent;border:0px solid gray;}"
             "QListWidget::Item:selected{background:#e6e7ea;color:#000000;border-left: 1px solid #c62f2f;}")
+        # self.listWidget.horizontalScrollBar().setStyleSheet("QScrollBar{background:#fafafa; width: 8px;}"
+        #                                                   "QScrollBar::handle{background:#e1e1e2;border-radius:4px;}"
+        #                                                   "QScrollBar::handle:hover{background:#cfcfd1;}"
+        #                                                   "QScrollBar::sub-line{background:transparent;}"
+        #                                                   "QScrollBar::add-line{background:transparent;}"
+        #                                                   "QScrollBar::add-page{background:#f5f5f7;}"
+        #                                                   "QScrollBar::sub-page{background:#f5f5f7;}")
         self.listWidget.setCursor(Qt.PointingHandCursor)
 
     def item_click(self, list_item: QListWidgetItem):

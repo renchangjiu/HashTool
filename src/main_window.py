@@ -15,7 +15,7 @@ class Ui_Form(object):
         Form.setObjectName("Form")
         Form.resize(600, 400)
         self.gridLayout = QtWidgets.QGridLayout(Form)
-        self.gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout.setContentsMargins(0, 5, 0, 0)
         self.gridLayout.setObjectName("gridLayout")
         self.listWidget = QtWidgets.QListWidget(Form)
         self.listWidget.setObjectName("listWidget")
