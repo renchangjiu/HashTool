@@ -1,2 +1,7 @@
-# HashTool
-HashTool
+# HashTool 右键小工具
+1.作用
+
+2.安装
+
+3.用法
+

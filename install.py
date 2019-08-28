@@ -6,6 +6,7 @@ from src.app_attribute import AppAttribute as app
 
 def add_context_menu():
     root = os.path.split(os.path.abspath(sys.argv[0]))[0]
+    root = root.replace("\\", "/")
     pythonw_path = os.path.split(sys.executable)[0] + "/pythonw.exe"
     run_file_path = root + "/main.py"
     # C:\\Applications\\Python37/pythonw.exe "C:\\Users\\13595\\PycharmProjects\\HashTool/main.py" "%1"
