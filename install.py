@@ -28,9 +28,9 @@ def add_context_menu():
     winreg.CloseKey(key)
 
 
-def main():
+def test():
     add_context_menu()
 
 
 if __name__ == '__main__':
-    main()
+    test()

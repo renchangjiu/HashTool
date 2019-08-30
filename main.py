@@ -1,9 +1,9 @@
 import sys
 import os
 
-from PyQt5 import QtCore, QtGui, QtWidgets, uic
+from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import Qt, QObject, QEvent
-from PyQt5.QtGui import QIcon, QKeyEvent, QColor, QMouseEvent, QFont, QGuiApplication
+from PyQt5.QtGui import QIcon, QColor, QMouseEvent
 from PyQt5.QtWidgets import QWidget, QListWidgetItem
 
 from src.app_attribute import AppAttribute as app
@@ -29,7 +29,7 @@ class MainWindow(QWidget, Ui_Form):
             widget_item = QListWidgetItem(self.listWidget)
             widget_item.setTextAlignment(Qt.AlignCenter)
             widget_item.setForeground(QColor("red"))
-            widget_item.setText("文件不存在")
+            widget_item.setText("未检测到文件")
             return
 
         widget_item = QListWidgetItem(self.listWidget)
@@ -67,11 +67,8 @@ class MainWindow(QWidget, Ui_Form):
         self.listWidget.itemClicked.connect(self.item_click)
 
     def cal_end_callback(self, hash_value: str, pre_text: str, item: QListWidgetItem):
-        print(self.sender())
         item.setText(pre_text + hash_value)
         item.setData(Qt.UserRole, hash_value)
-        screen = QGuiApplication.primaryScreen()
-        screen.grabWindow(0).save("123", "jpg")
 
     def gen_list_item(self, hash_type: str, hash_value: str) -> QListWidgetItem:
         widget_item = QListWidgetItem()
@@ -134,11 +131,11 @@ def init_app_attribute():
 
 def main():
     app_ = QtWidgets.QApplication(sys.argv)
-    if len(sys.argv) <= 1:
-        print("未检测到文件...")
-        return
     init_app_attribute()
-    main_window = MainWindow(sys.argv[1])
+    file_path = ""
+    if len(sys.argv) > 1:
+        file_path = sys.argv[1]
+    main_window = MainWindow(file_path)
     main_window.show()
     sys.exit(app_.exec_())
 

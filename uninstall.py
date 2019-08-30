@@ -16,9 +16,9 @@ def delete_reg_key():
         print(msg)
 
 
-def main():
+def test():
     delete_reg_key()
 
 
 if __name__ == '__main__':
-    main()
+    test()
