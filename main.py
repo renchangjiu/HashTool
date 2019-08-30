@@ -3,7 +3,7 @@ import os
 
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from PyQt5.QtCore import Qt, QObject, QEvent
-from PyQt5.QtGui import QIcon, QKeyEvent, QColor, QMouseEvent, QFont
+from PyQt5.QtGui import QIcon, QKeyEvent, QColor, QMouseEvent, QFont, QGuiApplication
 from PyQt5.QtWidgets import QWidget, QListWidgetItem
 
 from src.app_attribute import AppAttribute as app
@@ -67,8 +67,11 @@ class MainWindow(QWidget, Ui_Form):
         self.listWidget.itemClicked.connect(self.item_click)
 
     def cal_end_callback(self, hash_value: str, pre_text: str, item: QListWidgetItem):
+        print(self.sender())
         item.setText(pre_text + hash_value)
         item.setData(Qt.UserRole, hash_value)
+        screen = QGuiApplication.primaryScreen()
+        screen.grabWindow(0).save("123", "jpg")
 
     def gen_list_item(self, hash_type: str, hash_value: str) -> QListWidgetItem:
         widget_item = QListWidgetItem()
@@ -95,7 +98,7 @@ class MainWindow(QWidget, Ui_Form):
 
     def item_click(self, list_item: QListWidgetItem):
         data = list_item.data(Qt.UserRole)
-        if data is not null:
+        if data is not null and data != "Calculating...":
             ClipboardUtil.set_text(data)
             self.label.setText("Copied.")
 
