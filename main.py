@@ -1,4 +1,4 @@
-import hashlib, sys
+import sys
 import os
 
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
@@ -10,6 +10,7 @@ from src.app_attribute import AppAttribute as app
 from src.main_window import Ui_Form
 from src.hash_util import HashUtil
 from src.clipboard_util import ClipboardUtil
+from src.thread_cal_hash import ThreadCalHash
 
 null = None
 
@@ -43,11 +44,31 @@ class MainWindow(QWidget, Ui_Form):
         widget_item.setText(format_size(os.path.getsize(file_path)))
         widget_item.setFlags(Qt.NoItemFlags)
 
-        self.listWidget.addItem(self.gen_list_item("MD5   ", HashUtil.MD5(file_path)))
-        self.listWidget.addItem(self.gen_list_item("SHA1  ", HashUtil.SHA1(file_path)))
-        self.listWidget.addItem(self.gen_list_item("SHA256", HashUtil.SHA256(file_path)))
+        item0 = self.gen_list_item("MD5   ", "Calculating...")
+        self.listWidget.addItem(item0)
+        item1 = self.gen_list_item("SHA1  ", "Calculating...")
+        self.listWidget.addItem(item1)
+        item2 = self.gen_list_item("SHA256", "Calculating...")
+        self.listWidget.addItem(item2)
+
+        # 开启3个线程分别计算hash值
+        self.thread0 = ThreadCalHash(HashUtil.MD5, file_path, "MD5    : ", item0)
+        self.thread0.start()
+        self.thread0.cal_end.connect(self.cal_end_callback)
+
+        self.thread1 = ThreadCalHash(HashUtil.SHA1, file_path, "SHA1   : ", item1)
+        self.thread1.start()
+        self.thread1.cal_end.connect(self.cal_end_callback)
+
+        self.thread2 = ThreadCalHash(HashUtil.SHA256, file_path, "SHA256 : ", item2)
+        self.thread2.start()
+        self.thread2.cal_end.connect(self.cal_end_callback)
 
         self.listWidget.itemClicked.connect(self.item_click)
+
+    def cal_end_callback(self, hash_value: str, pre_text: str, item: QListWidgetItem):
+        item.setText(pre_text + hash_value)
+        item.setData(Qt.UserRole, hash_value)
 
     def gen_list_item(self, hash_type: str, hash_value: str) -> QListWidgetItem:
         widget_item = QListWidgetItem()
