@@ -1,6 +1,8 @@
 import sys
 import os
 
+import click
+
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import Qt, QObject, QEvent
 from PyQt5.QtGui import QIcon, QColor, QMouseEvent
@@ -125,19 +127,28 @@ def format_size(size: int) -> str:
     return size
 
 
-def init_app_attribute():
-    app.root = os.path.split(sys.argv[0])[0]
+@click.command()
+@click.option("-f", type=str, help="计算文件的hash值, 该参数值为: 文件路径")
+@click.option("-t", nargs=2, help="计算字符串的hash值, 该参数值为: 算法 字符串")
+def main(f, t):
+    if f != null:
+        file_hash(f)
+    else:
+        print(string_hash(t[0], t[1]))
 
 
-def main():
+def file_hash(file_path):
     app_ = QtWidgets.QApplication(sys.argv)
-    init_app_attribute()
-    file_path = ""
-    if len(sys.argv) > 1:
-        file_path = sys.argv[1]
     main_window = MainWindow(file_path)
     main_window.show()
     sys.exit(app_.exec_())
+
+
+def string_hash(hash_alg: str, string: str):
+    ret = HashUtil.string_hash(hash_alg, string)
+    if ret == "":
+        ret = "无效的算法: %s" % hash_alg
+    return ret
 
 
 if __name__ == "__main__":

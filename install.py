@@ -8,9 +8,9 @@ def add_context_menu():
     root = os.path.split(os.path.abspath(sys.argv[0]))[0]
     root = root.replace("\\", "/")
     pythonw_path = os.path.split(sys.executable)[0] + "/pythonw.exe"
-    run_file_path = root + "/main.py"
+    run_file_path = root + "/main.py -f"
     # C:\\Applications\\Python37/pythonw.exe "C:\\Users\\13595\\PycharmProjects\\HashTool/main.py" "%1"
-    py_command = r'%s "%s" ' % (pythonw_path, run_file_path) + '"%1"'
+    py_command = r'%s %s ' % (pythonw_path, run_file_path) + '"%1"'
     # 打开名称父键
     key = winreg.OpenKey(winreg.HKEY_CLASSES_ROOT, r'*\\shell')
     # 为key创建一个名称为menu_name的sub_key, 并设置sub_key的值为menu_name加上快捷键, 数据类型为REG_SZ字符串类型
